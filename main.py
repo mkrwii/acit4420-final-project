@@ -1,4 +1,5 @@
 from enum import Enum
+import random
 
 
 class Flexibility(Enum):
@@ -24,28 +25,40 @@ class Request:
         self.luggage = int(luggage)
         self.flexibility = Flexibility[flexibility.upper()]
 
+
+def ascii_art():
+    art = r"""
+    ████        ▄▄▄▄    ▄▄▄▄     ▄▄▄▄▄▄▄ ████        ████        ████        ████ ▄▄▄▄▄▄▄     ▄▄▄▄▄▄▄    
+    █▀░▀▀▀▓█▀▄  █▀ ░    █▀▄█  ▄▀█▓▀ ▀░▀█ █▀░▀▀▀▓█▀▄  █▀░▀  ▄▀█▓▀▀▀░▀█  ▄▀█▓▀▀▀░▀█ █▀ ▀ ▀▓█▀▄  █▀ ░ ▀▓█▀▄ 
+    ▌░█░  ▐▌░▐▌ ▌█░▒    ▌░▐▓ ▐▌░▐▌  ░█░▐ ▌░█░  ▐▌░▐▌ ▀▀▀▀ ▐▌░▐▌  ░█░▐ ▐▌░▐▌  ░█░▐ ▌░░▒  ▐▌▒▐▌ ▌█░▒  ▐▌░▐▌
+    ▀■░▒   ▌█▀░ ▀░■░    ▌█▀░ ░▀█▐        ▀■░▒   ▌█▀░ ▀■░▒ ░▀█▐   ▒░■▀ ░▀█▐   ▒░■▀ ▀ ■░   ▌░▀░ ▀░■░   ▌░▀░
+    ▒░█░   ▒░░▒ ░▒░░    ▒░░▒  ▀▀▀▀▀▀▒░░▒ ▒░█░   ▒░░▒ ▒░█░ ▒░░▒   ░█░▒ ▒░░▒   ░█░▒ ▒░░ ▀▀▀▀▀▀▀ ░▒░░       
+    ▄■ ▄   ▄■█░ ▄░■░    ▄■█░ ▄■ ▄   ▄■█░ ▄■ ▄   ▄■█░ ▄■ ▄ ░█■▄   ▄ ■▄ ░█■▄   ▄ ■▄ ▄■█░   ▒■▄░ ▄░■░       
+    ▌░█▐  ▐▌░█▌ ▌░░▐   ▐▌░█▌ ▌░█▐  ▐▌░█▌ ▌░█▐  ▐▌░█▌ ▌░█▐ ▐█░▐▌  ▌█░▐ ▐█░▐▌  ▌█░▐ ▌░░▐  ▐░▐█▌ ▌░░▐       
+    ▓▄▄█ ▄██▄▀  █▄▄▓  ▄██▄▀  ▓▄▄█ ▄██▄▀  ▓▄▄█ ▄██▄▀  ▓▄▄█  ▀▄██▄ █▄▄▓  ▀▄██▄ █▄▄▓ █▄▄▓ ▄▄▄█▀  █▄▄▓       
+    ▀▀▀▀▀▀▀     ▀▀▀▀▀▀▀▀     ▀▀▀▀▀▀▀     ▀▀▀▀▀▀▀     ▀▀▀▀     ▀▀▀▀▀▀▀     ▀▀▀▀▀▀▀ ▀▀▀▀▀▀▀     ▀▀▀▀       
+    
+    """
+    print(art)
+
 def requester():
     while True:
-            input_price = input("Please enter your max budget for the trip, in EUR: ")
-            input_maxtransfers = input("Please enter your maximum number of transfers: ")
-            input_duration = input("Please enter your preferred duration of trip, in hours: ")
-            input_luggage = input("Please enter how many pieces of luggage you intend to carry: ")
-            print("Levels of flexibility available are:")
-            print("Fully refundable: enter FULL")
-            print("Rebookable but not refundable: enter REBOOKABLE")
-            print("Not refundable or rebookable: enter NONE")
-            input_flexibility = input("Please tell us your preferred level of flexibility: ")
-            try:
-                req = Request(input_price, input_maxtransfers, input_duration, input_luggage, input_flexibility)
-                if req:
-                    print("Request successfully produced!")
-                    return req
-                else:
-                    print("There was a problem with your request, please try again.")
-            except Exception as e:
-                print(f"Error when generating request: {e}")
-                continue
-
+        input_price = input("Please enter your max budget for the trip, in EUR: ")
+        input_maxtransfers = input("Please enter your maximum number of transfers: ")
+        input_duration = input("Please enter your preferred duration of trip, in hours: ")
+        input_luggage = input("Please enter how many pieces of luggage you intend to carry: ")
+        print("Levels of flexibility available are:")
+        print("Fully refundable: enter FULL")
+        print("Rebookable but not refundable: enter REBOOKABLE")
+        print("Not refundable or rebookable: enter NONE")
+        input_flexibility = input("Please tell us your preferred level of flexibility: ")
+        try:
+            req = Request(input_price, input_maxtransfers, input_duration, input_luggage, input_flexibility)
+            print("Request successfully produced!")
+            return req
+        except Exception as e:
+            print(f"Error when generating request: {e}")
+            print("Please try again.")
 
 def check_offer(offer_obj, request_obj):
     checks = {
@@ -71,15 +84,26 @@ def check_offer(offer_obj, request_obj):
 
     return overall
 
+def test_offers(seed, num_offers):
+    offers = []
+    if seed is not None:
+        random.seed(seed)
+    else:
+        random.seed(186)
+    companies = ["SolRuta", "Camino Express", "CostaLink", "VerdeBus", "NocheVia"]
+    for _ in range(num_offers):
+        company = random.choice(companies)
+        price = round(random.uniform(10, 100), 2)
+        transfers = random.randint(0, 3)
+        duration = round(random.uniform(1, 10), 1)
+        luggage = random.randint(0, 5)
+        flexibility = random.choice(list(Flexibility))
+        offers.append(Offer(company, price, transfers, duration, luggage, flexibility))
+    return offers
 
 def main():
-    offers = [
-    Offer("SpainExpress", 199.99, 0, 1.8, 1, Flexibility.FULL),
-    Offer("MurciaBus", 145.50, 1, 2.5, 2, Flexibility.REBOOKABLE),
-    Offer("BussaNova", 289.00, 0, 3.2, 3, Flexibility.FULL),
-    Offer("TrixBus", 119.75, 2, 2.9, 0, Flexibility.NONE),
-    Offer("CataloniaExpress", 175.25, 1, 3.7, 4, Flexibility.REBOOKABLE),
-    ]
+    ascii_art()
+    offers = test_offers(seed=None, num_offers=5)
     print("Welcome to BusBidder Spain, your Python-powered Bus ticket marketplace.")
     req = requester()
     for offer in offers:
