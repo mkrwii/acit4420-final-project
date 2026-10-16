@@ -1,0 +1,93 @@
+from enum import Enum
+
+
+class Flexibility(Enum):
+    NONE = 1
+    REBOOKABLE = 2
+    FULL = 3
+
+class Offer:
+    def __init__(self, company, price, transfers, duration, luggage, flexibility):
+        self.company = company
+        self.price = price
+        self.transfers = transfers
+        self.duration = duration
+        self.luggage = luggage
+        self.flexibility = flexibility
+
+
+class Request:
+    def __init__(self, budget, maxtransfers, duration, luggage, flexibility):
+        self.budget = float(budget)
+        self.maxtransfers = int(maxtransfers)
+        self.duration = float(duration)
+        self.luggage = int(luggage)
+        self.flexibility = Flexibility[flexibility.upper()]
+
+def requester():
+    while True:
+            input_price = input("Please enter your max budget for the trip, in EUR: ")
+            input_maxtransfers = input("Please enter your maximum number of transfers: ")
+            input_duration = input("Please enter your preferred duration of trip, in hours: ")
+            input_luggage = input("Please enter how many pieces of luggage you intend to carry: ")
+            print("Levels of flexibility available are:")
+            print("Fully refundable: enter FULL")
+            print("Rebookable but not refundable: enter REBOOKABLE")
+            print("Not refundable or rebookable: enter NONE")
+            input_flexibility = input("Please tell us your preferred level of flexibility: ")
+            try:
+                req = Request(input_price, input_maxtransfers, input_duration, input_luggage, input_flexibility)
+                if req:
+                    print("Request successfully produced!")
+                    return req
+                else:
+                    print("There was a problem with your request, please try again.")
+            except Exception as e:
+                print(f"Error when generating request: {e}")
+                continue
+
+
+def check_offer(offer_obj, request_obj):
+    checks = {
+        "Budget": offer_obj.price <= request_obj.budget,
+        "Transfers": offer_obj.transfers <= request_obj.maxtransfers,
+        "Duration": offer_obj.duration <= request_obj.duration,
+        "Luggage": offer_obj.luggage >= request_obj.luggage,
+        "Flexibility": offer_obj.flexibility.value >= request_obj.flexibility.value,
+    }
+
+    print(f"Checking offer from {offer_obj.company}:")
+
+    for criterion, passed in checks.items():
+        status = "PASS" if passed else "FAIL"
+        print(f"  {criterion}: {status}")
+
+    overall = all(checks.values())
+
+    if overall:
+        print("=> Offer is within the requested values.")
+    else:
+        print("=> Offer does NOT meet the requested values.")
+
+    return overall
+
+
+def main():
+    offers = [
+    Offer("SpainExpress", 199.99, 0, 1.8, 1, Flexibility.FULL),
+    Offer("MurciaBus", 145.50, 1, 2.5, 2, Flexibility.REBOOKABLE),
+    Offer("BussaNova", 289.00, 0, 3.2, 3, Flexibility.FULL),
+    Offer("TrixBus", 119.75, 2, 2.9, 0, Flexibility.NONE),
+    Offer("CataloniaExpress", 175.25, 1, 3.7, 4, Flexibility.REBOOKABLE),
+    ]
+    print("Welcome to BusBidder Spain, your Python-powered Bus ticket marketplace.")
+    req = requester()
+    for offer in offers:
+        check_offer(offer, req)
+    
+        
+
+
+
+if __name__ == "__main__":
+    main()
