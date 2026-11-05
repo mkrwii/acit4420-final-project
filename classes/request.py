@@ -1,4 +1,4 @@
-from classes import Flexibility
+from classes.classes import Flexibility
 
 class Request:
     def __init__(self, origin, destination, budget, maxtransfers, duration, luggage, flexibility):

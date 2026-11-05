@@ -1,4 +1,4 @@
-from classes import Offer, Flexibility
+from classes.classes import Offer, Flexibility
 
 def read_offers_from_file(logger, filename="offers.csv",):
     offers = []
