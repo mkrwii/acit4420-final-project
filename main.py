@@ -1,8 +1,8 @@
-from offerchecker import OfferChecker
+from controllers.offerchecker import OfferChecker
 from cli import splash_screen, requester
 from testrun import testrequester
 import logging
-from offercontroller import read_offers_from_file
+from controllers.offercontroller import read_offers_from_file
 
 
 logger = logging.getLogger(__name__)
@@ -31,7 +31,6 @@ def main():
         choice = input("Your choice: ")
         if choice == "test":
             testrun()
-            pass
         elif choice == "cli":
             runcli()
         elif choice == "exit":
