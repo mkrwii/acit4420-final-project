@@ -1,5 +1,5 @@
-from classes import Offer, Flexibility
-from request import Request
+from classes.classes import Offer, Flexibility
+from classes.request import Request
 
 class OfferChecker:
     def __init__(self, offer, request):

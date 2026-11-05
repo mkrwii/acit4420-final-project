@@ -1,5 +1,5 @@
-from classes import Offer, Flexibility
-from request import Request
+from classes.classes import Offer, Flexibility
+from classes.request import Request
 
 def ascii_art():
     art = r"""
