@@ -1,4 +1,4 @@
-from classes import Flexibility
+from classes import Flexibility, Offer
 import random
 DATA_FOLDER = "./data"
 
@@ -36,6 +36,29 @@ def populate_offers(combined):
                 flexibility = random.choice(list(Flexibility))
                 bulk_data.append(f"{company},{origin},{destination},{price},{transfers},{duration},{luggage},{flexibility.name}")
     return bulk_data
+
+def test_offers(seed, num_offers):
+    """
+    Generates a list of Offer objects for testing purposes. The number of offers generated is determined by num_offers.
+
+    CURRENTLY UNUSED
+
+    """
+    offers = []
+    if seed is not None:
+        random.seed(seed)
+    else:
+        random.seed(186)
+    companies = ["SolRuta", "Camino Express", "CostaLink", "VerdeBus", "NocheVia"]
+    for _ in range(num_offers):
+        company = random.choice(companies)
+        price = round(random.uniform(10, 100), 2)
+        transfers = random.randint(0, 3)
+        duration = round(random.uniform(1, 10), 1)
+        luggage = random.randint(0, 5)
+        flexibility = random.choice(list(Flexibility))
+        offers.append(Offer(company, price, transfers, duration, luggage, flexibility))
+    return offers
 
 
 def main():
