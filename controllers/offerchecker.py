@@ -20,11 +20,6 @@ class OfferChecker:
 
         overall = all(checks.values())
         if overall:
-            print("This offer meets all your requirements!")
+            return True
         else:
-            print("This offer does not meet all your requirements.")
-            for key, value in checks.items():
-                if not value:
-                    print(f"  - Requirement not met: {key}")
-
-        return overall
+            return False

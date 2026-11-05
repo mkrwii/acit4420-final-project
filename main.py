@@ -2,7 +2,7 @@ from controllers.offerchecker import OfferChecker
 from cli import splash_screen, requester
 from testrun import testrequester
 import logging
-from controllers.offercontroller import read_offers_from_file
+from controllers.offercontroller import run_offer_checker
 import argparse
 
 argument_parser = argparse.ArgumentParser(description="BusBidder Spain CLI")
@@ -17,18 +17,13 @@ logger.setLevel(logging.DEBUG)
 
 
 def testrun():
-    offers = read_offers_from_file(logger, "data/offers.csv")
     req = testrequester(logger)
-    for offer in offers:
-        checker = OfferChecker(offer, req)
-        checker.check_offer()
+    run_offer_checker(req, logger)
 
 def runcli():
-    offers = read_offers_from_file(logger, "data/offers.csv")
+
     req = requester()
-    for offer in offers:
-        checker = OfferChecker(offer, req)
-        checker.check_offer()
+    run_offer_checker(req, logger)
 
 def main():
     if args.test:

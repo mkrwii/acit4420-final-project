@@ -9,7 +9,7 @@ def testrequester(logger):
         input_maxtransfers = "2"
         input_duration = "5"
         input_luggage = "1"
-        input_flexibility = "FULL"
+        input_flexibility = "NONE"
         try:
             req = Request(input_origin, input_destination, input_price, input_maxtransfers, input_duration, input_luggage, input_flexibility)
             logger.debug("Request successfully produced!")
