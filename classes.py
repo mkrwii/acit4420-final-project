@@ -8,8 +8,10 @@ class Flexibility(Enum):
 
 
 class Offer:
-    def __init__(self, company, price, transfers, duration, luggage, flexibility):
+    def __init__(self, company, origin, destination, price, transfers, duration, luggage, flexibility):
         self.company = company
+        self.origin = origin
+        self.destination = destination
         self.price = price
         self.transfers = transfers
         self.duration = duration
@@ -18,7 +20,9 @@ class Offer:
 
 
 class Request:
-    def __init__(self, budget, maxtransfers, duration, luggage, flexibility):
+    def __init__(self, origin, destination, budget, maxtransfers, duration, luggage, flexibility):
+        self.origin = origin
+        self.destination = destination
         self.budget = float(budget)
         self.maxtransfers = int(maxtransfers)
         self.duration = float(duration)

@@ -19,6 +19,8 @@ def ascii_art():
 
 def requester():
     while True:
+        input_origin = input("Please enter the city you want to travel from: ")
+        input_destination = input("Please enter the city you want to travel to: ")
         input_price = input("Please enter your max budget for the trip, in EUR: ")
         input_maxtransfers = input("Please enter your maximum number of transfers: ")
         input_duration = input("Please enter your preferred duration of trip, in hours: ")
@@ -29,7 +31,7 @@ def requester():
         print("Not refundable or rebookable: enter NONE")
         input_flexibility = input("Please tell us your preferred level of flexibility: ")
         try:
-            req = Request(input_price, input_maxtransfers, input_duration, input_luggage, input_flexibility)
+            req = Request(input_origin, input_destination, input_price, input_maxtransfers, input_duration, input_luggage, input_flexibility)
             print("Request successfully produced!")
             return req
         except Exception as e:
@@ -38,6 +40,8 @@ def requester():
 
 def check_offer(offer_obj, request_obj):
     checks = {
+        "Origin": offer_obj.origin == request_obj.origin,
+        "Destination": offer_obj.destination == request_obj.destination,
         "Budget": offer_obj.price <= request_obj.budget,
         "Transfers": offer_obj.transfers <= request_obj.maxtransfers,
         "Duration": offer_obj.duration <= request_obj.duration,
@@ -46,6 +50,13 @@ def check_offer(offer_obj, request_obj):
     }
 
     print(f"Checking offer from {offer_obj.company}:")
+    print(f"  Origin: {offer_obj.origin}")
+    print(f"  Destination: {offer_obj.destination}")
+    print(f"  Price: {offer_obj.price} EUR")
+    print(f"  Transfers: {offer_obj.transfers}")
+    print(f"  Duration: {offer_obj.duration} hours")
+    print(f"  Luggage: {offer_obj.luggage} pieces")
+    print(f"  Flexibility: {offer_obj.flexibility.name}")
 
     for criterion, passed in checks.items():
         status = "PASS" if passed else "FAIL"
@@ -61,6 +72,9 @@ def check_offer(offer_obj, request_obj):
     return overall
 
 def test_offers(seed, num_offers):
+    """
+    Generates a list of Offer objects for testing purposes. The number of offers generated is determined by num_offers.
+    """
     offers = []
     if seed is not None:
         random.seed(seed)
@@ -77,9 +91,22 @@ def test_offers(seed, num_offers):
         offers.append(Offer(company, price, transfers, duration, luggage, flexibility))
     return offers
 
+def read_offers_from_file(filename="offers.csv"):
+    offers = []
+    try:
+        with open(filename, "r") as f:
+            print(f"Reading offers from {filename}...")
+            for line in f:
+                company, origin, destination, price, transfers, duration, luggage, flexibility = line.strip().split(",")
+                offer = Offer(company, origin, destination, float(price), int(transfers), float(duration), int(luggage), Flexibility[flexibility])
+                offers.append(offer)
+    except FileNotFoundError:
+        print(f"File {filename} not found. Please ensure the file exists.")
+    return offers
+
 def main():
     ascii_art()
-    offers = test_offers(seed=None, num_offers=5)
+    offers = read_offers_from_file("data/offers.csv")
     print("Welcome to BusBidder Spain, your Python-powered Bus ticket marketplace.")
     req = requester()
     for offer in offers:
