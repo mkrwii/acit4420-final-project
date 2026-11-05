@@ -1,6 +1,7 @@
 import random
-from classes import Offer, Request, Flexibility
-
+from classes import Offer, Flexibility
+from request import Request
+from offerchecker import OfferChecker
 
 def ascii_art():
     art = r"""
@@ -110,11 +111,8 @@ def main():
     print("Welcome to BusBidder Spain, your Python-powered Bus ticket marketplace.")
     req = requester()
     for offer in offers:
-        check_offer(offer, req)
-    
-        
-
-
+        checker = OfferChecker(offer, req)
+        checker.check_offer()
 
 if __name__ == "__main__":
     main()

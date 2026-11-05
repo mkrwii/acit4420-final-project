@@ -18,13 +18,3 @@ class Offer:
         self.luggage = luggage
         self.flexibility = flexibility
 
-
-class Request:
-    def __init__(self, origin, destination, budget, maxtransfers, duration, luggage, flexibility):
-        self.origin = origin
-        self.destination = destination
-        self.budget = float(budget)
-        self.maxtransfers = int(maxtransfers)
-        self.duration = float(duration)
-        self.luggage = int(luggage)
-        self.flexibility = Flexibility[flexibility.upper()]
