@@ -3,6 +3,12 @@ from cli import splash_screen, requester
 from testrun import testrequester
 import logging
 from controllers.offercontroller import read_offers_from_file
+import argparse
+
+argument_parser = argparse.ArgumentParser(description="BusBidder Spain CLI")
+argument_parser.add_argument("--test", action="store_true", help="Run the program in test mode")
+args = argument_parser.parse_args()
+
 
 
 logger = logging.getLogger(__name__)
@@ -25,6 +31,9 @@ def runcli():
         checker.check_offer()
 
 def main():
+    if args.test:
+        testrun()
+        return
     splash_screen()
     while True:
         print("Type 'test' to run a test, 'cli' for full interface or 'exit' to quit.")
